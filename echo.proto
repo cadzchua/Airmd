@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package aisstream;
+
+service AISService
+{
+  rpc SendAisData(stream AISData) returns (AISResponse);
+}
+
+message AISData
+{
+  uint32 id = 1;
+  double lat = 2;
+  double long = 3;
+}
+
+message AISResponse {
+  string reply = 1;
+}
+
