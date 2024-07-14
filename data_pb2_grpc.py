@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import echo_pb2 as echo__pb2
+import data_pb2 as data__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__
@@ -20,7 +20,7 @@ except ImportError:
 if _version_not_supported:
     warnings.warn(
         f'The grpc package installed is at version {GRPC_VERSION},'
-        + f' but the generated code in echo_pb2_grpc.py depends on'
+        + f' but the generated code in data_pb2_grpc.py depends on'
         + f' grpcio>={GRPC_GENERATED_VERSION}.'
         + f' Please upgrade your grpc module to grpcio>={GRPC_GENERATED_VERSION}'
         + f' or downgrade your generated code using grpcio-tools<={GRPC_VERSION}.'
@@ -30,7 +30,7 @@ if _version_not_supported:
     )
 
 
-class AISServiceStub(object):
+class datatransferStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -39,43 +39,43 @@ class AISServiceStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SendAisData = channel.stream_unary(
-                '/aisstream.AISService/SendAisData',
-                request_serializer=echo__pb2.AISData.SerializeToString,
-                response_deserializer=echo__pb2.AISResponse.FromString,
+        self.SendData = channel.unary_stream(
+                '/data.datatransfer/SendData',
+                request_serializer=data__pb2.DataRequest.SerializeToString,
+                response_deserializer=data__pb2.DataResponse.FromString,
                 _registered_method=True)
 
 
-class AISServiceServicer(object):
+class datatransferServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def SendAisData(self, request_iterator, context):
+    def SendData(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_AISServiceServicer_to_server(servicer, server):
+def add_datatransferServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SendAisData': grpc.stream_unary_rpc_method_handler(
-                    servicer.SendAisData,
-                    request_deserializer=echo__pb2.AISData.FromString,
-                    response_serializer=echo__pb2.AISResponse.SerializeToString,
+            'SendData': grpc.unary_stream_rpc_method_handler(
+                    servicer.SendData,
+                    request_deserializer=data__pb2.DataRequest.FromString,
+                    response_serializer=data__pb2.DataResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'aisstream.AISService', rpc_method_handlers)
+            'data.datatransfer', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
-    server.add_registered_method_handlers('aisstream.AISService', rpc_method_handlers)
+    server.add_registered_method_handlers('data.datatransfer', rpc_method_handlers)
 
 
  # This class is part of an EXPERIMENTAL API.
-class AISService(object):
+class datatransfer(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def SendAisData(request_iterator,
+    def SendData(request,
             target,
             options=(),
             channel_credentials=None,
@@ -85,12 +85,12 @@ class AISService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_unary(
-            request_iterator,
+        return grpc.experimental.unary_stream(
+            request,
             target,
-            '/aisstream.AISService/SendAisData',
-            echo__pb2.AISData.SerializeToString,
-            echo__pb2.AISResponse.FromString,
+            '/data.datatransfer/SendData',
+            data__pb2.DataRequest.SerializeToString,
+            data__pb2.DataResponse.FromString,
             options,
             channel_credentials,
             insecure,

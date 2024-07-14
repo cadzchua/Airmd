@@ -1,24 +1,29 @@
-import asyncio
-import grpc
-import echo_pb2
-import echo_pb2_grpc
+from concurrent import futures
+import time
 
-async def connect_ais_stream():
-    async with grpc.aio.insecure_channel('localhost:7151') as channel:
-        stub = echo_pb2_grpc.AISServiceStub(channel)
-        
-        async def generate_messages():
-            for i in range(5):  # Sending 5 messages
-                ais_data = echo_pb2.AISData(
-                    id=i,
-                    lat=1.23456 + i,
-                    long=2.34567 + i
-                )
-                yield ais_data
-        
-        # Send the stream of messages and receive the response
-        response = await stub.SendAisData(generate_messages())
-        print(f"Response received: {response.reply}")
+import grpc
+import data_pb2
+import data_pb2_grpc
+
+class datatransferServicer(data_pb2_grpc.datatransferServicer):
+    
+    def SendData(self, request, context):
+        print("ParrotSaysHello Request Made:")
+        print(request)
+
+        for i in range(3):
+            hello_reply = data_pb2.DataResponse()
+            hello_reply.message = f"Hi this is server {i + 1}"
+            yield hello_reply
+            time.sleep(3)
+
+
+def serve():
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    data_pb2_grpc.add_datatransferServicer_to_server(datatransferServicer(), server)
+    server.add_insecure_port("localhost:50051")
+    server.start()
+    server.wait_for_termination()
 
 if __name__ == "__main__":
-    asyncio.run(connect_ais_stream())
+    serve()
