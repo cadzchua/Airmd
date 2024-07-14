@@ -23,3 +23,7 @@ docker run -v ./echo.proto:/proto/echo.proto -it --rm fullstorydev/grpcurl -plai
 #   double lat = 2;
 #   double long = 3;
 # }
+
+data.datatransfer/*
+data-transfer-request
+data-transfer-response

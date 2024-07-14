@@ -25,10 +25,10 @@ bindings:
     kind: server
     options:
       services:
-        - proto/echo.proto
+        - proto/data.proto
     routes:
       - when:
-          - method: aisstream.AISService/*
+          - method: data.datatransfer/*
         exit: north_grpc_kafka_mapping
 
   # Proxy a gRPC service to a Kafka topic
@@ -37,13 +37,13 @@ bindings:
     kind: proxy
     routes:
       - when:
-          - method: aisstream.AISService/*
+          - method: data.datatransfer/*
         exit: north_kafka_cache_client
         with:
           capability: produce
-          topic: echo-messages
+          topic: data-transfer-request
           acks: leader_only
-          reply-to: echo-messages
+          reply-to: data-transfer-response
 
   north_kafka_cache_client:
     type: kafka
@@ -55,7 +55,7 @@ bindings:
     kind: cache_server
     options:
       bootstrap:
-        - echo-messages
+        - data-transfer
     exit: south_kafka_client
 
   # Connect to Kafka
@@ -70,48 +70,45 @@ bindings:
   south_kafka_tcp_client:
     type: tcp
     kind: client
+
+  west_kafka_grpc_remote_server:
+    type: kafka-grpc
+    kind: remote_server
+    entry: north_kafka_cache_client
+    options:
+      acks: leader_only
+    routes:
+      - exit: west_grpc_client
+        when:
+          - topic: data-transfer-request
+            reply-to: data-transfer-response
+            method: data.datatransfer/*
+        with:
+          scheme: http
+          authority: localhost:7151
+
+  west_grpc_client:
+    type: grpc
+    kind: client
+    routes:
+      - exit: west_http_client
+        when:
+          - method: data.datatransfer/*
+
+  west_http_client:
+    type: http
+    kind: client
+    options:
+      versions:
+        - h2
+    exit: west_tcp_client
+
+  west_tcp_client:
+    type: tcp
+    kind: client
     options:
       host: 0.0.0.0
-      port: 7151
-
-  # remote_server:
-  #   type: kafka-grpc
-  #   kind: remote_server
-  #   options:
-  #     acks: leader_only
-  #   routes:
-  #     - when:
-  #         - topic: echo-messages
-  #           reply-to: echo-messages
-  #       exit: grpc_client
-  #       with:
-  #         scheme: http
-
-  # grpc_client:
-  #   type: grpc
-  #   kind: client
-  #   options:
-  #     services:
-  #       - route_guide.proto
-  #   routes:
-  #     - when:
-  #         - method: routeguide.RouteGuide/GetFeature
-  #       exit: http_client
-
-  # http_client:
-  #   type: http
-  #   kind: client
-  #   options:
-  #     versions:
-  #       - h2
-  #   exit: tcp_client
-
-  # tcp_client:
-  #   type: tcp
-  #   kind: client
-  #   options:
-  #     host: 0.0.0.0
-  #     port: 6969
+      port: 8080
 
 telemetry:
   exporters:

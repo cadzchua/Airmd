@@ -11,7 +11,7 @@ services:
       KAFKA_BOOTSTRAP_SERVER: "kafka:29092"
     volumes:
       - ./zilla.yaml:/etc/zilla/zilla.yaml
-      - ./echo.proto:/etc/zilla/proto/echo.proto
+      - ./data.proto:/etc/zilla/proto/data.proto
     command: start -v -e
 
   kafka:
@@ -34,13 +34,24 @@ services:
       KAFKA_CFG_ADVERTISED_LISTENERS: "CLIENT://localhost:9092,INTERNAL://kafka:29092"
       KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE: "true"
 
-  kafka-init:
+  kafka-init-request:
     image: bitnami/kafka:3.5
     command:
       - "/bin/bash"
       - "-c"
       - |
-        /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists --topic echo-messages
+        /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists --topic data-transfer-request
+    depends_on:
+      - kafka
+    init: true
+
+  kafka-init-response:
+    image: bitnami/kafka:3.5
+    command:
+      - "/bin/bash"
+      - "-c"
+      - |
+        /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists --topic data-transfer-response
     depends_on:
       - kafka
     init: true

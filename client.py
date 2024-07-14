@@ -4,7 +4,7 @@ import time
 import grpc
 
 def run():
-    with grpc.insecure_channel('localhost:50051') as channel:
+    with grpc.insecure_channel('localhost:7151') as channel:
         stub = data_pb2_grpc.datatransferStub(channel)
         
         hello_request = data_pb2.DataRequest(reply = "Bonjour")

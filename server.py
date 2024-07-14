@@ -21,8 +21,9 @@ class datatransferServicer(data_pb2_grpc.datatransferServicer):
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     data_pb2_grpc.add_datatransferServicer_to_server(datatransferServicer(), server)
-    server.add_insecure_port("localhost:50051")
+    server.add_insecure_port("localhost:8080")
     server.start()
+    print("server Started~~")
     server.wait_for_termination()
 
 if __name__ == "__main__":
