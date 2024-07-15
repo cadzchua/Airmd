@@ -7,6 +7,8 @@ services:
       - kafka
     ports:
       - 7151:7151
+      - 8080:8080
+      
     environment:
       KAFKA_BOOTSTRAP_SERVER: "kafka:29092"
     volumes:
@@ -51,7 +53,7 @@ services:
       - "/bin/bash"
       - "-c"
       - |
-        /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists --topic data-transfer-response
+        /opt/bitnami/kafka/bin/kafka-topics.sh --bootstrap-server kafka:29092 --create --if-not-exists --topic data-stream
     depends_on:
       - kafka
     init: true

@@ -4,14 +4,14 @@ import time
 import grpc
 
 def run():
-    with grpc.insecure_channel('localhost:7151') as channel:
+    with grpc.insecure_channel('localhost:8080') as channel:
         stub = data_pb2_grpc.datatransferStub(channel)
         
         hello_request = data_pb2.DataRequest(reply = "Bonjour")
         hello_replies = stub.SendData(hello_request)
 
         for hello_reply in hello_replies:
-            print("ParrotSaysHello Response Received:")
+            print("Server Response Received:")
             print(hello_reply)
        
 

@@ -1,4 +1,4 @@
-name: gRPC-example
+name: gRPC-kafka-proxy
 bindings:
   # Proxy service entrypoint
   north_tcp_server:
@@ -43,7 +43,7 @@ bindings:
           capability: produce
           topic: data-transfer-request
           acks: leader_only
-          reply-to: data-transfer-response
+          reply-to: data-stream
 
   north_kafka_cache_client:
     type: kafka
@@ -55,7 +55,7 @@ bindings:
     kind: cache_server
     options:
       bootstrap:
-        - data-transfer
+        - data-transfer-request
     exit: south_kafka_client
 
   # Connect to Kafka
@@ -81,7 +81,7 @@ bindings:
       - exit: west_grpc_client
         when:
           - topic: data-transfer-request
-            reply-to: data-transfer-response
+            reply-to: data-stream
             method: data.datatransfer/*
         with:
           scheme: http
