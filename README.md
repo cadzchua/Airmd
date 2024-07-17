@@ -1,5 +1,13 @@
 # gRPC-Kafka Proxy
 
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Debugging](#debugging)
+
 ## Introduction
 
 This project sets up a gRPC-Kafka proxy (**Zilla**) where the client listens on HTTPS port `7151` and uses Kafka to communicate with a server on TCP port `8080`. This allows for efficient message streaming using gRPC and handling using Zilla as a middle layer.
@@ -38,12 +46,19 @@ Ensure you have the following installed:
     python client.py
     ```
 
+4. Stop the Docker images:
+    ```sh
+    docker-compose down [-v]
+    ```
+
 ## Configuration
 
 The proxy service is defined in the `zilla.yml` file and the gRPC service is defined in the `proto` files. Below is the main configuration for the gRPC-Kafka proxy:
 
 ### Files
-- data.proto - edit the file to edit information that the server/client is sending across the gRPC
+- data.proto - edit the file to edit information that the server/client is sending across the gRPC, make sure to **run the command in command.sh again** after reconfiguring the data.proto file
+- zilla.yaml - edit the file to change ports/ip addresses
+- docker-compose.yml - edit the file to change and expose ports
 
 
 ## Debugging
