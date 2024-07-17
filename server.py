@@ -23,7 +23,7 @@ def serve():
     data_pb2_grpc.add_datatransferServicer_to_server(datatransferServicer(), server)
     server.add_insecure_port("localhost:8080")
     server.start()
-    print("server Started~~. Listening at port 8080.")
+    print("server Started~~ Listening at port 8080.")
     server.wait_for_termination()
 
 if __name__ == "__main__":

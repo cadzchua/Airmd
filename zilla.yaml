@@ -1,4 +1,11 @@
 name: gRPC-kafka-proxy
+catalogs:
+  host_filesystem:
+    type: filesystem
+    options:
+      subjects:
+        data:
+          path: proto/data.proto
 bindings:
   # Proxy service entrypoint
   north_tcp_server:
@@ -6,9 +13,12 @@ bindings:
     kind: server
     options:
       host: 0.0.0.0
-      port: 7151
-    exit: north_http_server
-
+      port:
+        - 7151
+    routes:
+      - when:
+          - port: 7151
+        exit: north_http_server
   north_http_server:
     type: http
     kind: server
@@ -23,9 +33,9 @@ bindings:
   north_grpc_server:
     type: grpc
     kind: server
-    options:
-      services:
-        - proto/data.proto
+    catalog:
+      host_filesystem:
+        - subject: data
     routes:
       - when:
           - method: data.datatransfer/*
@@ -53,9 +63,6 @@ bindings:
   south_kafka_cache_server:
     type: kafka
     kind: cache_server
-    options:
-      bootstrap:
-        - data-transfer-request
     exit: south_kafka_client
 
   # Connect to Kafka
@@ -85,7 +92,7 @@ bindings:
             method: data.datatransfer/*
         with:
           scheme: http
-          authority: localhost:7151
+          authority: host.docker.internal:8080
 
   west_grpc_client:
     type: grpc
@@ -107,7 +114,7 @@ bindings:
     type: tcp
     kind: client
     options:
-      host: 0.0.0.0
+      host: host.docker.internal
       port: 8080
 
 telemetry:
