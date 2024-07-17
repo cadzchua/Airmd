@@ -8,7 +8,7 @@ services:
     ports:
       - 7151:7151
       - 8080:8080
-      
+
     environment:
       KAFKA_BOOTSTRAP_SERVER: "kafka:29092"
     volumes:
@@ -58,10 +58,15 @@ services:
       - kafka
     init: true
 
-  # ais_stream_producer:
-  #   image: ais_stream_zilla
+  # grpc-server:
+  #   image: cadzchua/grpc-server
   #   depends_on:
-  #     - kafka-init
   #     - kafka
   #     - zilla
-  #   restart: always
+
+  # grpc-client:
+  #   image: cadzchua/grpc-client
+  #   depends_on:
+  #     - kafka
+  #     - zilla
+  #     - grpc-server
