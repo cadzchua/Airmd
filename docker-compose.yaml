@@ -1,7 +1,7 @@
 version: "3"
 services:
   zilla:
-    image: ghcr.io/aklivity/zilla:latest
+    image: ghcr.io/aklivity/zilla:0.9.88
     pull_policy: always
     depends_on:
       - kafka
