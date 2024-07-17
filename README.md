@@ -7,6 +7,9 @@
 - [Installation](#installation)
 - [Configuration](#configuration)
 - [Debugging](#debugging)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
 ## Introduction
 
@@ -78,3 +81,27 @@ Then, revert back the port numbers in `server.py` and `client.py` to their origi
 Install Kadeck (or other monitoring tool) and connect to `kafka (localhost:9092)` monitor the topics and consumer to validate that the proxy is working. If the proxy failed to work as intended, the file to edit would be the `zilla.yml` file.
 
 Tip: Also check the Dockerfile to make sure you are exposing the port that you are using.
+
+## Contributing
+
+Contributions are welcome! Please fork this repository, make your changes, and submit a pull request.
+
+1. Star and fork the repository.
+2. Create a new branch: `git checkout -b my-feature-branch`
+3. Make your changes.
+4. Commit your changes: `git commit -m 'Add some feature'`
+5. Push to the branch: `git push master my-feature-branch`
+6. Open a pull request.
+
+## License
+
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+
+## Authors
+
+The portfolio project is maintained by cadzchua.
+
+## Contact
+
+Feel free to connect with me on [LinkedIn](https://www.linkedin.com/in/caddenchua/).
