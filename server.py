@@ -11,11 +11,11 @@ class datatransferServicer(data_pb2_grpc.datatransferServicer):
         print("Client Request Made:")
         print(request)
 
-        for i in range(3):
+        while True:
             hello_reply = data_pb2.DataResponse()
-            hello_reply.message = f"Hi this is the server. Test {i + 1}!"
+            message = input("Enter your message: ")
+            hello_reply.message = message
             yield hello_reply
-            time.sleep(3)
 
 
 def serve():
