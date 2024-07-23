@@ -11,7 +11,7 @@ class datatransferServicer(data_pb2_grpc.datatransferServicer):
         print("Client Request Made:")
         print(request)
 
-        while True:
+        while context.is_active():
             hello_reply = data_pb2.DataResponse()
             message = input("Enter your message: ")
             hello_reply.message = message
