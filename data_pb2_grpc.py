@@ -4,6 +4,7 @@ import grpc
 import warnings
 
 import data_pb2 as data__pb2
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 GRPC_GENERATED_VERSION = '1.64.1'
 GRPC_VERSION = grpc.__version__
@@ -39,10 +40,10 @@ class datatransferStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.SendData = channel.unary_stream(
+        self.SendData = channel.unary_unary(
                 '/data.datatransfer/SendData',
-                request_serializer=data__pb2.DataRequest.SerializeToString,
-                response_deserializer=data__pb2.DataResponse.FromString,
+                request_serializer=data__pb2.DataResponse.SerializeToString,
+                response_deserializer=google_dot_protobuf_dot_empty__pb2.Empty.FromString,
                 _registered_method=True)
 
 
@@ -58,10 +59,10 @@ class datatransferServicer(object):
 
 def add_datatransferServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'SendData': grpc.unary_stream_rpc_method_handler(
+            'SendData': grpc.unary_unary_rpc_method_handler(
                     servicer.SendData,
-                    request_deserializer=data__pb2.DataRequest.FromString,
-                    response_serializer=data__pb2.DataResponse.SerializeToString,
+                    request_deserializer=data__pb2.DataResponse.FromString,
+                    response_serializer=google_dot_protobuf_dot_empty__pb2.Empty.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -85,12 +86,12 @@ class datatransfer(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_stream(
+        return grpc.experimental.unary_unary(
             request,
             target,
             '/data.datatransfer/SendData',
-            data__pb2.DataRequest.SerializeToString,
-            data__pb2.DataResponse.FromString,
+            data__pb2.DataResponse.SerializeToString,
+            google_dot_protobuf_dot_empty__pb2.Empty.FromString,
             options,
             channel_credentials,
             insecure,

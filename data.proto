@@ -2,17 +2,15 @@ syntax = "proto3";
 
 package data;
 
+import "google/protobuf/empty.proto";
+
 service datatransfer
 {
-  rpc SendData(DataRequest) returns (stream DataResponse);
+  rpc SendData(DataResponse) returns (google.protobuf.Empty);
 }
 
 message DataResponse
 {
   string message = 1;
-}
-
-message DataRequest {
-  string reply = 1;
 }
 

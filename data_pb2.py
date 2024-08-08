@@ -12,19 +12,18 @@ from google.protobuf.internal import builder as _builder
 _sym_db = _symbol_database.Default()
 
 
+from google.protobuf import empty_pb2 as google_dot_protobuf_dot_empty__pb2
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ndata.proto\x12\x04\x64\x61ta\"\x1f\n\x0c\x44\x61taResponse\x12\x0f\n\x07message\x18\x01 \x01(\t\"\x1c\n\x0b\x44\x61taRequest\x12\r\n\x05reply\x18\x01 \x01(\t2C\n\x0c\x64\x61tatransfer\x12\x33\n\x08SendData\x12\x11.data.DataRequest\x1a\x12.data.DataResponse0\x01\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\ndata.proto\x12\x04\x64\x61ta\x1a\x1bgoogle/protobuf/empty.proto\"\x1f\n\x0c\x44\x61taResponse\x12\x0f\n\x07message\x18\x01 \x01(\t2F\n\x0c\x64\x61tatransfer\x12\x36\n\x08SendData\x12\x12.data.DataResponse\x1a\x16.google.protobuf.Emptyb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'data_pb2', _globals)
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
-  _globals['_DATARESPONSE']._serialized_start=20
-  _globals['_DATARESPONSE']._serialized_end=51
-  _globals['_DATAREQUEST']._serialized_start=53
-  _globals['_DATAREQUEST']._serialized_end=81
-  _globals['_DATATRANSFER']._serialized_start=83
-  _globals['_DATATRANSFER']._serialized_end=150
+  _globals['_DATARESPONSE']._serialized_start=49
+  _globals['_DATARESPONSE']._serialized_end=80
+  _globals['_DATATRANSFER']._serialized_start=82
+  _globals['_DATATRANSFER']._serialized_end=152
 # @@protoc_insertion_point(module_scope)

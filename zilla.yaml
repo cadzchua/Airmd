@@ -19,6 +19,7 @@ bindings:
       - when:
           - port: 7151
         exit: north_http_server
+
   north_http_server:
     type: http
     kind: server
@@ -29,7 +30,6 @@ bindings:
         policy: cross-origin
     exit: north_grpc_server
 
-  # gRPC service definition
   north_grpc_server:
     type: grpc
     kind: server
@@ -40,8 +40,6 @@ bindings:
       - when:
           - method: data.datatransfer/*
         exit: north_grpc_kafka_mapping
-
-  # Proxy a gRPC service to a Kafka topic
   north_grpc_kafka_mapping:
     type: grpc-kafka
     kind: proxy
@@ -51,7 +49,7 @@ bindings:
         exit: north_kafka_cache_client
         with:
           capability: produce
-          topic: data-transfer-request
+          topic: data-stream
           acks: leader_only
           reply-to: data-stream
 
@@ -64,58 +62,16 @@ bindings:
     type: kafka
     kind: cache_server
     exit: south_kafka_client
-
-  # Connect to Kafka
   south_kafka_client:
     type: kafka
     kind: client
     options:
       servers:
         - ${{env.KAFKA_BOOTSTRAP_SERVER}}
-    exit: south_kafka_tcp_client
-
-  south_kafka_tcp_client:
+    exit: south_tcp_client
+  south_tcp_client:
     type: tcp
     kind: client
-
-  west_kafka_grpc_remote_server:
-    type: kafka-grpc
-    kind: remote_server
-    entry: north_kafka_cache_client
-    options:
-      acks: leader_only
-    routes:
-      - exit: west_grpc_client
-        when:
-          - topic: data-transfer-request
-            reply-to: data-stream
-            method: data.datatransfer/*
-        with:
-          scheme: http
-          authority: host.docker.internal:8080
-
-  west_grpc_client:
-    type: grpc
-    kind: client
-    routes:
-      - exit: west_http_client
-        when:
-          - method: data.datatransfer/*
-
-  west_http_client:
-    type: http
-    kind: client
-    options:
-      versions:
-        - h2
-    exit: west_tcp_client
-
-  west_tcp_client:
-    type: tcp
-    kind: client
-    options:
-      host: host.docker.internal
-      port: 8080
 
 telemetry:
   exporters:
